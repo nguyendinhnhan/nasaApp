@@ -20,6 +20,7 @@
     "react-native/split-platform-components": "off",
     "react-native/no-inline-styles": "off",
     "react/forbid-prop-types": "off",
+    "import/prefer-default-export": "off",
     "indent": [
       "error",
       2,
@@ -39,6 +40,7 @@
       }
     ],
     "semi": ["error", "always"],
+    "dot-notation": "off",
     "prettier/prettier": [
       "error",
       {

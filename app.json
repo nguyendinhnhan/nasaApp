@@ -1,4 +1,5 @@
 {
   "name": "nfqApp",
-  "displayName": "nfqApp"
+  "displayName": "nfqApp",
+  "apiRoot": "https://jsonplaceholder.typicode.com"
 }
