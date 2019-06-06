@@ -1,5 +1,4 @@
 import http from '../helpers/http';
-import { searchData } from '../helpers/mockData';
 
 export default class Nasa {
   /**
@@ -7,7 +6,7 @@ export default class Nasa {
    * @description To search Nasa
    * @return Promise { data } : data - list of nasa
    */
-  static searchNasa() {
-    return searchData;
+  static searchNasa(query) {
+    return http.get(`/search?q=${query}`);
   }
 }
