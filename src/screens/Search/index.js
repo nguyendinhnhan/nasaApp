@@ -1,15 +1,22 @@
 import React, { PureComponent } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList
+} from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import { searchNasaAction } from '../../actions/nasa.action';
+import NasaCard from '../../components/NasaCard.component';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    paddingHorizontal: 25,
     alignItems: 'center',
     backgroundColor: '#F5FCFF'
   },
@@ -17,6 +24,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     margin: 10
+  },
+  nasasContainer: {
+    marginVertical: 20
   }
 });
 
@@ -26,9 +36,16 @@ class Search extends PureComponent {
     searchNasa();
   }
 
+  _keyExtractor = (item, index) => index.toString();
+
+  _renderItem = (item, index) => {
+    return <NasaCard key={index} nasaData={item} />;
+  };
+
   render() {
     const { nasaFeed, navigation } = this.props;
-    const title = _.get(nasaFeed, 'result.title');
+    console.log('nasaFeed: ', nasaFeed);
+    const nasas = _.get(nasaFeed, 'result.items');
 
     return (
       <View style={styles.container}>
@@ -36,7 +53,13 @@ class Search extends PureComponent {
           <Text style={styles.text}>{'<< Go Collection'}</Text>
         </TouchableOpacity>
         <Text style={styles.text}>SearchScreen</Text>
-        <Text style={styles.text}>{title}</Text>
+        <FlatList
+          style={styles.nasasContainer}
+          showsVerticalScrollIndicator={false}
+          data={nasas}
+          keyExtractor={this._keyExtractor}
+          renderItem={this._renderItem}
+        />
       </View>
     );
   }
