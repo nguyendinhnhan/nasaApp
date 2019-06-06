@@ -2,10 +2,10 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import Api from '../api';
 import { NASA } from '../constants/actionTypes';
 
-function* searchNasa() {
+function* searchNasa(action) {
   try {
-    const res = yield call(Api.Nasa.searchNasa);
-    yield put({ type: NASA.SEARCH_SUCCESS, data: res.data });
+    const res = yield call(Api.Nasa.searchNasa, action.query);
+    yield put({ type: NASA.SEARCH_SUCCESS, data: res.data.collection });
   } catch (e) {
     yield put({ type: NASA.SEARCH_FAIL, message: e.message });
   }

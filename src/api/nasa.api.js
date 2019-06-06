@@ -6,7 +6,7 @@ export default class Nasa {
    * @description To search Nasa
    * @return Promise { data } : data - list of nasa
    */
-  static searchNasa() {
-    return http.get(`/posts/1`);
+  static searchNasa(query) {
+    return http.get(`/search?q=${query}`);
   }
 }
