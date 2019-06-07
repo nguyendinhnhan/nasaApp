@@ -1,0 +1,1 @@
+export const NASA_COLLECTION = 'NASA_COLLECTION';
