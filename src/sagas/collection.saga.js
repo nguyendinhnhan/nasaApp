@@ -83,10 +83,33 @@ function* removeNasaToCollection({ nasaId }) {
   }
 }
 
+async function _updateData(data) {
+  const nasaId = _.get(data, 'data[0].nasa_id');
+  try {
+    await AsyncStorage.mergeItem(nasaId, JSON.stringify(data));
+    return nasaId;
+  } catch (error) {
+    return error;
+  }
+}
+
+function* updateNasaOfCollection({ data }) {
+  try {
+    const res = yield call(_updateData, data);
+    yield put({
+      type: COLLECTION.UPDATE_NASA_SUCCESS,
+      data: [res, JSON.stringify(data)]
+    });
+  } catch (e) {
+    yield put({ type: COLLECTION.UPDATE_NASA_FAIL, message: e.message });
+  }
+}
+
 export function* collectionSaga() {
   yield all([
     takeLatest(COLLECTION.FETCH_LOCAL_REQUEST, fetchLocalCollection),
     takeLatest(COLLECTION.ADD_NASA_REQUEST, addNasaToCollection),
-    takeLatest(COLLECTION.REMOVE_NASA_REQUEST, removeNasaToCollection)
+    takeLatest(COLLECTION.REMOVE_NASA_REQUEST, removeNasaToCollection),
+    takeLatest(COLLECTION.UPDATE_NASA_REQUEST, updateNasaOfCollection)
   ]);
 }

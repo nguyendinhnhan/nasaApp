@@ -14,31 +14,23 @@ export const searchData = {
     version: '1.0',
     items: [
       {
-        href:
-          'https://images-assets.nasa.gov/video/NHQ_2019_0311_Go Forward to the Moon/collection.json',
         links: [
           {
             href:
-              'https://images-assets.nasa.gov/video/NHQ_2019_0311_Go Forward to the Moon/NHQ_2019_0311_Go Forward to the Moon~thumb.jpg',
-            rel: 'preview',
-            render: 'image'
+              'https://images-assets.nasa.gov/video/NHQ_2019_0311_Go Forward to the Moon/NHQ_2019_0311_Go Forward to the Moon~thumb.jpg'
           },
           {
             href:
-              'https://images-assets.nasa.gov/video/NHQ_2019_0311_Go Forward to the Moon/NHQ_2019_0311_Go Forward to the Moon.srt',
-            rel: 'captions'
+              'https://images-assets.nasa.gov/video/NHQ_2019_0311_Go Forward to the Moon/NHQ_2019_0311_Go Forward to the Moon.srt'
           }
         ],
         data: [
           {
             title: 'Go Forward to the Moon',
-            nasa_id: 'NHQ_2019_0311_Go Forward to the Moon',
-            center: 'HQ',
-            date_created: '2019-03-11T00:00:00Z',
+            nasa_id: 'PIA20052',
             description:
               'NASA is going to the Moon and on to Mars, in a measured, sustainable way. Working with U.S. companies and international partners, NASA will push the boundaries of human exploration forward to the Moon. NASA is working to establish a permanent human presence on the Moon within the next decade to uncover new scientific discoveries and lay the foundation for private companies to build a lunar economy.  Right now, NASA is taking steps to begin this next era of exploration. #Moon2Mars  Learn more at: https://www.nasa.gov/moontomars',
-            media_type: 'video',
-            keywords: ['Moon', 'Mars', 'Forward to the Moon']
+            media_type: 'video'
           }
         ]
       },

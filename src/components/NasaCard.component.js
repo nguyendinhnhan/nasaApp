@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 import _ from 'lodash';
+import { searchData } from '../helpers/mockData';
 
 const styles = StyleSheet.create({
   container: {
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
 });
 
 const NasaCard = props => {
-  const { nasaData, addToNasaCollection, onRemove } = props;
+  const { nasaData, addToNasaCollection, onRemove, onUpdate } = props;
   const nasaId = _.get(nasaData, 'data[0].nasa_id');
   const imageUri = { uri: _.get(nasaData, 'links[0].href') };
   const center = _.get(nasaData, 'data[0].center');
@@ -117,7 +118,10 @@ const NasaCard = props => {
           >
             <Icon name="ios-trash" size={30} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.action}>
+          <TouchableOpacity
+            style={styles.action}
+            onPress={() => onUpdate(searchData.collection.items[0])}
+          >
             <Icon name="ios-brush" size={30} />
           </TouchableOpacity>
         </View>
@@ -129,7 +133,8 @@ const NasaCard = props => {
 NasaCard.propTypes = {
   nasaData: PropTypes.object.isRequired,
   addToNasaCollection: PropTypes.func,
-  onRemove: PropTypes.func
+  onRemove: PropTypes.func,
+  onUpdate: PropTypes.func
 };
 
 export default NasaCard;

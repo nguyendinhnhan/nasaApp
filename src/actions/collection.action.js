@@ -13,3 +13,8 @@ export const removeNasaAction = nasaId => ({
   type: COLLECTION.REMOVE_NASA_REQUEST,
   nasaId
 });
+
+export const updateNasaAction = data => ({
+  type: COLLECTION.UPDATE_NASA_REQUEST,
+  data
+});

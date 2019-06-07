@@ -8,7 +8,8 @@ import _ from 'lodash';
 import styles from './styles';
 import {
   fetchLocalCollectionAction,
-  removeNasaAction
+  removeNasaAction,
+  updateNasaAction
 } from '../../actions/collection.action';
 import NasaCard from '../../components/NasaCard.component';
 
@@ -27,8 +28,14 @@ class Collection extends PureComponent {
         key={index}
         nasaData={data}
         onRemove={this._removeNasaToCollection}
+        onUpdate={this._updateNasafromCollection}
       />
     );
+  };
+
+  _updateNasafromCollection = item => {
+    const { updateNasaFromCollection } = this.props;
+    updateNasaFromCollection(item);
   };
 
   _removeNasaToCollection = nasaId => {
@@ -67,6 +74,7 @@ Collection.propTypes = {
   navigation: PropTypes.object,
   fetchLocalCollection: PropTypes.func,
   removeNasaToCollection: PropTypes.func,
+  updateNasaFromCollection: PropTypes.func,
   localCollection: PropTypes.object
 };
 
@@ -76,7 +84,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchLocalCollection: () => dispatch(fetchLocalCollectionAction()),
-  removeNasaToCollection: nasaId => dispatch(removeNasaAction(nasaId))
+  removeNasaToCollection: nasaId => dispatch(removeNasaAction(nasaId)),
+  updateNasaFromCollection: item => dispatch(updateNasaAction(item))
 });
 
 export default connect(
