@@ -14,6 +14,7 @@ import _ from 'lodash';
 import { searchNasaAction } from '../../actions/nasa.action';
 import SearchBox from '../../components/SearchBox.component';
 import NasaCard from '../../components/NasaCard.component';
+import { NASA_COLLECTION } from '../../constants/appConstants';
 
 const styles = StyleSheet.create({
   container: {
@@ -43,7 +44,7 @@ class Search extends PureComponent {
 
   _keyExtractor = (item, index) => index.toString();
 
-  _renderItem = (item, index) => {
+  _renderItem = ({ item, index }) => {
     return (
       <NasaCard
         key={index}
@@ -58,9 +59,9 @@ class Search extends PureComponent {
     const nasaId = _.get(nasaData, 'data[0].nasa_id');
 
     try {
-      let collection = await AsyncStorage.getItem('NASA_COLLECTION');
+      let collection = await AsyncStorage.getItem(NASA_COLLECTION);
       collection = _.concat(JSON.parse(collection) || [], nasaId);
-      const firstPair = ['NASA_COLLECTION', JSON.stringify(collection)];
+      const firstPair = [NASA_COLLECTION, JSON.stringify(collection)];
       const secondPair = [nasaId, JSON.stringify(nasaData)];
       await AsyncStorage.multiSet([firstPair, secondPair]);
     } catch (error) {

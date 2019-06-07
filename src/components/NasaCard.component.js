@@ -75,11 +75,11 @@ const styles = StyleSheet.create({
 
 const NasaCard = props => {
   const { nasaData, addToNasaCollection } = props;
-  const imageUri = { uri: _.get(nasaData, 'item.links[0].href') };
-  const center = _.get(nasaData, 'item.data[0].center');
-  const dateCreated = _.get(nasaData, 'item.data[0].date_created');
-  const title = _.get(nasaData, 'item.data[0].title');
-  const description = _.get(nasaData, 'item.data[0].description');
+  const imageUri = { uri: _.get(nasaData, 'links[0].href') };
+  const center = _.get(nasaData, 'data[0].center');
+  const dateCreated = _.get(nasaData, 'data[0].date_created');
+  const title = _.get(nasaData, 'data[0].title');
+  const description = _.get(nasaData, 'data[0].description');
   return (
     <View style={styles.container}>
       <TouchableOpacity>
