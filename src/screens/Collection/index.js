@@ -6,7 +6,10 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import _ from 'lodash';
 
 import styles from './styles';
-import { fetchLocalCollectionAction } from '../../actions/collection.action';
+import {
+  fetchLocalCollectionAction,
+  removeNasaAction
+} from '../../actions/collection.action';
 import NasaCard from '../../components/NasaCard.component';
 
 class Collection extends PureComponent {
@@ -19,7 +22,18 @@ class Collection extends PureComponent {
 
   _renderItem = ({ item, index }) => {
     const data = JSON.parse(_.get(item, '[1]'));
-    return <NasaCard key={index} nasaData={data} />;
+    return (
+      <NasaCard
+        key={index}
+        nasaData={data}
+        onRemove={this._removeNasaToCollection}
+      />
+    );
+  };
+
+  _removeNasaToCollection = nasaId => {
+    const { removeNasaToCollection } = this.props;
+    removeNasaToCollection(nasaId);
   };
 
   render() {
@@ -52,6 +66,7 @@ class Collection extends PureComponent {
 Collection.propTypes = {
   navigation: PropTypes.object,
   fetchLocalCollection: PropTypes.func,
+  removeNasaToCollection: PropTypes.func,
   localCollection: PropTypes.object
 };
 
@@ -60,7 +75,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchLocalCollection: () => dispatch(fetchLocalCollectionAction())
+  fetchLocalCollection: () => dispatch(fetchLocalCollectionAction()),
+  removeNasaToCollection: nasaId => dispatch(removeNasaAction(nasaId))
 });
 
 export default connect(

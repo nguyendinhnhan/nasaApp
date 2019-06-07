@@ -74,7 +74,8 @@ const styles = StyleSheet.create({
 });
 
 const NasaCard = props => {
-  const { nasaData, addToNasaCollection } = props;
+  const { nasaData, addToNasaCollection, onRemove } = props;
+  const nasaId = _.get(nasaData, 'data[0].nasa_id');
   const imageUri = { uri: _.get(nasaData, 'links[0].href') };
   const center = _.get(nasaData, 'data[0].center');
   const dateCreated = _.get(nasaData, 'data[0].date_created');
@@ -110,7 +111,10 @@ const NasaCard = props => {
           <TouchableOpacity style={styles.action}>
             <Icon name="ios-heart-empty" size={30} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.action}>
+          <TouchableOpacity
+            style={styles.action}
+            onPress={() => onRemove(nasaId)}
+          >
             <Icon name="ios-trash" size={30} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.action}>
@@ -124,7 +128,8 @@ const NasaCard = props => {
 
 NasaCard.propTypes = {
   nasaData: PropTypes.object.isRequired,
-  addToNasaCollection: PropTypes.func
+  addToNasaCollection: PropTypes.func,
+  onRemove: PropTypes.func
 };
 
 export default NasaCard;

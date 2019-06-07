@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { COLLECTION } from '../constants/actionTypes';
 import { NASA_COLLECTION } from '../constants/appConstants';
 
-async function retrieveData() {
+async function _retrieveData() {
   let result;
   try {
     const nasaColletion = await AsyncStorage.getItem(NASA_COLLECTION);
@@ -20,7 +20,7 @@ async function retrieveData() {
 
 function* fetchLocalCollection() {
   try {
-    const res = yield call(retrieveData);
+    const res = yield call(_retrieveData);
     yield put({
       type: COLLECTION.FETCH_LOCAL_SUCCESS,
       data: res
@@ -57,9 +57,36 @@ function* addNasaToCollection({ item }) {
   }
 }
 
+async function _removeData(nasaId) {
+  try {
+    await AsyncStorage.removeItem(nasaId);
+    let collection = await AsyncStorage.getItem(NASA_COLLECTION);
+    collection = JSON.parse(collection);
+    _.remove(collection, id => id === nasaId);
+    await AsyncStorage.setItem(NASA_COLLECTION, JSON.stringify(collection));
+
+    return nasaId;
+  } catch (error) {
+    return error;
+  }
+}
+
+function* removeNasaToCollection({ nasaId }) {
+  try {
+    const res = yield call(_removeData, nasaId);
+    yield put({
+      type: COLLECTION.REMOVE_NASA_SUCCESS,
+      data: res
+    });
+  } catch (e) {
+    yield put({ type: COLLECTION.REMOVE_NASA_FAIL, message: e.message });
+  }
+}
+
 export function* collectionSaga() {
   yield all([
     takeLatest(COLLECTION.FETCH_LOCAL_REQUEST, fetchLocalCollection),
-    takeLatest(COLLECTION.ADD_NASA_REQUEST, addNasaToCollection)
+    takeLatest(COLLECTION.ADD_NASA_REQUEST, addNasaToCollection),
+    takeLatest(COLLECTION.REMOVE_NASA_REQUEST, removeNasaToCollection)
   ]);
 }

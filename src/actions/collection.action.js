@@ -8,3 +8,8 @@ export const addNasaAction = item => ({
   type: COLLECTION.ADD_NASA_REQUEST,
   item
 });
+
+export const removeNasaAction = nasaId => ({
+  type: COLLECTION.REMOVE_NASA_REQUEST,
+  nasaId
+});

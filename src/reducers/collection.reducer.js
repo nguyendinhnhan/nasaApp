@@ -74,6 +74,40 @@ export default function(state = initialState, payload) {
         }
       };
 
+    /* Remove nasa to COLLECTION */
+    case COLLECTION.REMOVE_NASA_REQUEST:
+      return {
+        ...state,
+        localCollection: {
+          ...state.localCollection,
+          requesting: true,
+          status: ''
+        }
+      };
+    case COLLECTION.REMOVE_NASA_SUCCESS:
+      return {
+        ...state,
+        localCollection: {
+          ...state.localCollection,
+          status: 'success',
+          requesting: false,
+          result: _.reject(
+            state.localCollection.result,
+            item => item[0] === payload.data
+          )
+        }
+      };
+    case COLLECTION.REMOVE_NASA_FAIL:
+      return {
+        ...state,
+        localCollection: {
+          ...state.localCollection,
+          status: 'error',
+          requesting: false,
+          error: payload.message
+        }
+      };
+
     default:
       return state;
   }
