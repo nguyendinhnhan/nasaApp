@@ -53,6 +53,23 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#707070',
     textAlign: 'center'
+  },
+  actionWrapper: {
+    marginVertical: 10,
+    marginLeft: 5,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  action: {
+    marginHorizontal: 5,
+    height: 50,
+    width: 50,
+    borderColor: '#DEDEDE',
+    borderWidth: 1,
+    borderRadius: 5,
+    alignItems: 'center',
+    alignContent: 'center',
+    justifyContent: 'center'
   }
 });
 
@@ -80,20 +97,34 @@ const NasaCard = props => {
           {description}
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.buttonWrapper}
-        onPress={() => addToNasaCollection(nasaData)}
-      >
-        <Icon name="ios-add" size={30} />
-        <Text style={styles.labelButton}>Add to NASA collection</Text>
-      </TouchableOpacity>
+      {addToNasaCollection ? (
+        <TouchableOpacity
+          style={styles.buttonWrapper}
+          onPress={() => addToNasaCollection(nasaData)}
+        >
+          <Icon name="ios-add" size={30} />
+          <Text style={styles.labelButton}>Add to NASA collection</Text>
+        </TouchableOpacity>
+      ) : (
+        <View style={styles.actionWrapper}>
+          <TouchableOpacity style={styles.action}>
+            <Icon name="ios-heart-empty" size={30} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.action}>
+            <Icon name="ios-trash" size={30} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.action}>
+            <Icon name="ios-brush" size={30} />
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };
 
 NasaCard.propTypes = {
   nasaData: PropTypes.object.isRequired,
-  addToNasaCollection: PropTypes.func.isRequired
+  addToNasaCollection: PropTypes.func
 };
 
 export default NasaCard;
