@@ -6,15 +6,14 @@ import {
   TouchableOpacity,
   FlatList
 } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import { searchNasaAction } from '../../actions/nasa.action';
+import { addNasaAction } from '../../actions/collection.action';
 import SearchBox from '../../components/SearchBox.component';
 import NasaCard from '../../components/NasaCard.component';
-import { NASA_COLLECTION } from '../../constants/appConstants';
 
 const styles = StyleSheet.create({
   container: {
@@ -54,23 +53,9 @@ class Search extends PureComponent {
     );
   };
 
-  _storeData = async item => {
-    const nasaData = _.get(item, 'item');
-    const nasaId = _.get(nasaData, 'data[0].nasa_id');
-
-    try {
-      let collection = await AsyncStorage.getItem(NASA_COLLECTION);
-      collection = _.concat(JSON.parse(collection) || [], nasaId);
-      const firstPair = [NASA_COLLECTION, JSON.stringify(collection)];
-      const secondPair = [nasaId, JSON.stringify(nasaData)];
-      await AsyncStorage.multiSet([firstPair, secondPair]);
-    } catch (error) {
-      console.log('error', error);
-    }
-  };
-
   _addToNasaCollection = item => {
-    this._storeData(item);
+    const { addNasaToCollection } = this.props;
+    addNasaToCollection(item);
   };
 
   _onChangeQuerySearch = text => {
@@ -109,6 +94,7 @@ class Search extends PureComponent {
 
 Search.propTypes = {
   searchNasa: PropTypes.func,
+  addNasaToCollection: PropTypes.func,
   nasaFeed: PropTypes.object,
   navigation: PropTypes.object
 };
@@ -118,7 +104,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  searchNasa: query => dispatch(searchNasaAction(query))
+  searchNasa: query => dispatch(searchNasaAction(query)),
+  addNasaToCollection: nasa => dispatch(addNasaAction(nasa))
 });
 
 export default connect(
