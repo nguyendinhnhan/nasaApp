@@ -1,32 +1,13 @@
 import React, { PureComponent } from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList
-} from 'react-native';
+import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Icon from 'react-native-vector-icons/Ionicons';
 import _ from 'lodash';
 
+import styles from './styles';
 import { fetchLocalCollectionAction } from '../../actions/collection.action';
 import NasaCard from '../../components/NasaCard.component';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-    paddingHorizontal: 25
-  },
-  text: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10
-  }
-});
 
 class Collection extends PureComponent {
   componentDidMount() {
@@ -46,10 +27,16 @@ class Collection extends PureComponent {
     const nasas = _.get(localCollection, 'result');
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={() => navigation.navigate('Search')}>
-          <Text style={styles.text}>{'Search >>'}</Text>
-        </TouchableOpacity>
-        <Text style={styles.text}>CollectionScreen</Text>
+        <View style={styles.header}>
+          <Text style={styles.title}>Nasa Collection</Text>
+          <TouchableOpacity
+            style={styles.addButton}
+            onPress={() => navigation.navigate('Search')}
+          >
+            <Icon name="ios-add" size={40} color="#FFF" />
+            <Text style={styles.text}>Add item</Text>
+          </TouchableOpacity>
+        </View>
         <FlatList
           style={styles.nasasContainer}
           showsVerticalScrollIndicator={false}
