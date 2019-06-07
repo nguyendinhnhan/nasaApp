@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   FlatList
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
@@ -43,7 +44,32 @@ class Search extends PureComponent {
   _keyExtractor = (item, index) => index.toString();
 
   _renderItem = (item, index) => {
-    return <NasaCard key={index} nasaData={item} />;
+    return (
+      <NasaCard
+        key={index}
+        nasaData={item}
+        addToNasaCollection={this._addToNasaCollection}
+      />
+    );
+  };
+
+  _storeData = async item => {
+    const nasaData = _.get(item, 'item');
+    const nasaId = _.get(nasaData, 'data[0].nasa_id');
+
+    try {
+      let collection = await AsyncStorage.getItem('NASA_COLLECTION');
+      collection = _.concat(JSON.parse(collection) || [], nasaId);
+      const firstPair = ['NASA_COLLECTION', JSON.stringify(collection)];
+      const secondPair = [nasaId, JSON.stringify(nasaData)];
+      await AsyncStorage.multiSet([firstPair, secondPair]);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  _addToNasaCollection = item => {
+    this._storeData(item);
   };
 
   _onChangeQuerySearch = text => {
