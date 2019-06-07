@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
 });
 
 const NasaCard = props => {
-  const { nasaData } = props;
+  const { nasaData, addToNasaCollection } = props;
   const imageUri = { uri: _.get(nasaData, 'item.links[0].href') };
   const center = _.get(nasaData, 'item.data[0].center');
   const dateCreated = _.get(nasaData, 'item.data[0].date_created');
@@ -80,7 +80,10 @@ const NasaCard = props => {
           {description}
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.buttonWrapper}>
+      <TouchableOpacity
+        style={styles.buttonWrapper}
+        onPress={() => addToNasaCollection(nasaData)}
+      >
         <Icon name="ios-add" size={30} />
         <Text style={styles.labelButton}>Add to NASA collection</Text>
       </TouchableOpacity>
@@ -89,7 +92,8 @@ const NasaCard = props => {
 };
 
 NasaCard.propTypes = {
-  nasaData: PropTypes.object.isRequired
+  nasaData: PropTypes.object.isRequired,
+  addToNasaCollection: PropTypes.func.isRequired
 };
 
 export default NasaCard;
