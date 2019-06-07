@@ -1,36 +1,14 @@
 import React, { PureComponent } from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList
-} from 'react-native';
+import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
+import styles from './styles';
 import { searchNasaAction } from '../../actions/nasa.action';
 import { addNasaAction } from '../../actions/collection.action';
 import SearchBox from '../../components/SearchBox.component';
 import NasaCard from '../../components/NasaCard.component';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 25,
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF'
-  },
-  text: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10
-  },
-  nasasContainer: {
-    marginTop: 20
-  }
-});
 
 class Search extends PureComponent {
   constructor(props) {
@@ -38,7 +16,7 @@ class Search extends PureComponent {
     this.state = {
       query: ''
     };
-    this.debounceSearch = _.debounce(this.searchByQuery, 600);
+    this.debounceSearch = _.debounce(this._searchByQuery, 400);
   }
 
   _keyExtractor = (item, index) => index.toString();
@@ -63,7 +41,7 @@ class Search extends PureComponent {
     this.debounceSearch(text);
   };
 
-  searchByQuery = text => {
+  _searchByQuery = text => {
     const { searchNasa } = this.props;
     searchNasa(text);
   };
@@ -76,9 +54,8 @@ class Search extends PureComponent {
     return (
       <View style={styles.container}>
         <TouchableOpacity onPress={() => navigation.navigate('Collection')}>
-          <Text style={styles.text}>{'<< Go Collection'}</Text>
+          <Text style={styles.text}>{'< Back to Collection'}</Text>
         </TouchableOpacity>
-        <Text style={styles.text}>SearchScreen</Text>
         <SearchBox query={query} onChangeText={this._onChangeQuerySearch} />
         <FlatList
           style={styles.nasasContainer}
