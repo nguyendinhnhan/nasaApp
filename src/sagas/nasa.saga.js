@@ -11,8 +11,6 @@ function* searchNasa(action) {
   }
 }
 
-function* nasaSaga() {
+export function* nasaSaga() {
   yield takeLatest(NASA.SEARCH_REQUEST, searchNasa);
 }
-
-export default nasaSaga;
