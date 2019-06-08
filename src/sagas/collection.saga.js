@@ -1,4 +1,4 @@
-import { all, call, put, takeLatest } from 'redux-saga/effects';
+import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 import AsyncStorage from '@react-native-community/async-storage';
 import _ from 'lodash';
 
@@ -13,7 +13,7 @@ async function _retrieveData() {
       result = await AsyncStorage.multiGet(JSON.parse(nasaColletion));
     }
   } catch (error) {
-    result = error;
+    throw error;
   }
   return result;
 }
@@ -30,28 +30,31 @@ function* fetchLocalCollection() {
   }
 }
 
-async function _storeData(item) {
-  const nasaId = _.get(item, 'data[0].nasa_id');
+async function _storeData(nasaId, item) {
   try {
     let collection = await AsyncStorage.getItem(NASA_COLLECTION);
     collection = _.concat(JSON.parse(collection) || [], nasaId);
     const firstPair = [NASA_COLLECTION, JSON.stringify(collection)];
     const secondPair = [nasaId, JSON.stringify(item)];
     await AsyncStorage.multiSet([firstPair, secondPair]);
-
-    return nasaId;
   } catch (error) {
-    return error;
+    throw error;
   }
+  return nasaId;
 }
 
 function* addNasaToCollection({ item }) {
   try {
-    const res = yield call(_storeData, item);
-    yield put({
-      type: COLLECTION.ADD_NASA_SUCCESS,
-      data: [res, JSON.stringify(item)]
-    });
+    const { result } = yield select(state => state.collection.localCollection);
+    const nasaId = _.get(item, 'data[0].nasa_id');
+    const existed = result.find(nasa => nasa[0] === nasaId);
+    if (!existed) {
+      const res = yield call(_storeData, nasaId, item);
+      yield put({
+        type: COLLECTION.ADD_NASA_SUCCESS,
+        data: [res, JSON.stringify(item)]
+      });
+    }
   } catch (e) {
     yield put({ type: COLLECTION.ADD_NASA_FAIL, message: e.message });
   }
@@ -64,11 +67,10 @@ async function _removeData(nasaId) {
     collection = JSON.parse(collection);
     _.remove(collection, id => id === nasaId);
     await AsyncStorage.setItem(NASA_COLLECTION, JSON.stringify(collection));
-
-    return nasaId;
   } catch (error) {
-    return error;
+    throw error;
   }
+  return nasaId;
 }
 
 function* removeNasaToCollection({ nasaId }) {
@@ -85,11 +87,11 @@ function* removeNasaToCollection({ nasaId }) {
 
 async function _updateData(nasaId, data) {
   try {
-    await AsyncStorage.mergeItem(nasaId, JSON.stringify(data));
-    return nasaId;
+    await AsyncStorage.mergeItem(nasaId, data);
   } catch (error) {
-    return error;
+    throw error;
   }
+  return nasaId;
 }
 
 function* updateNasaOfCollection({ formData }) {
