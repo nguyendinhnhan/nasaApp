@@ -31,6 +31,8 @@ class Search extends PureComponent {
     );
   };
 
+  _renderNoResult = () => <Text style={styles.noResult}>No NASA found</Text>;
+
   _addToNasaCollection = item => {
     const { addNasaToCollection } = this.props;
     addNasaToCollection(item);
@@ -63,6 +65,7 @@ class Search extends PureComponent {
           data={nasas}
           keyExtractor={this._keyExtractor}
           renderItem={this._renderItem}
+          ListEmptyComponent={this._renderNoResult}
         />
       </View>
     );

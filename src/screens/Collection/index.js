@@ -48,6 +48,10 @@ class Collection extends PureComponent {
     );
   };
 
+  _renderNoResult = () => (
+    <Text style={styles.noResult}>No NASA in Collection</Text>
+  );
+
   _toogleFavorite = (nasaId, isFavorite) => {
     const { favoriteNasaOfCollection } = this.props;
     favoriteNasaOfCollection({ nasaId, isFavorite });
@@ -104,6 +108,7 @@ class Collection extends PureComponent {
           data={nasas}
           keyExtractor={this._keyExtractor}
           renderItem={this._renderItem}
+          ListEmptyComponent={this._renderNoResult}
         />
         <FormModal
           isVisible={visibleModal}

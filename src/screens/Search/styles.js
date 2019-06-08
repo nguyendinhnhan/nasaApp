@@ -14,6 +14,13 @@ const styles = StyleSheet.create({
   },
   nasasContainer: {
     marginTop: 20
+  },
+  noResult: {
+    flex: 2,
+    fontSize: 20,
+    color: '#484848',
+    textAlign: 'center',
+    marginTop: 100
   }
 });
 

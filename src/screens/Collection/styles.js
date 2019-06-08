@@ -31,6 +31,13 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     color: '#FFF',
     fontSize: 18
+  },
+  noResult: {
+    flex: 2,
+    fontSize: 20,
+    color: '#484848',
+    textAlign: 'center',
+    marginTop: 100
   }
 });
 
