@@ -84,6 +84,7 @@ function* removeNasaToCollection({ nasaId }) {
 }
 
 async function _updateData(data) {
+  console.log('newData', data);
   const nasaId = _.get(data, 'data[0].nasa_id');
   try {
     await AsyncStorage.mergeItem(nasaId, JSON.stringify(data));
@@ -93,12 +94,27 @@ async function _updateData(data) {
   }
 }
 
-function* updateNasaOfCollection({ data }) {
+function* updateNasaOfCollection({ formData }) {
+  console.log('formData', formData);
+  const newData = {
+    links: [
+      {
+        href: formData.imageUrl
+      }
+    ],
+    data: [
+      {
+        title: formData.title,
+        nasa_id: formData.id,
+        description: formData.description
+      }
+    ]
+  };
   try {
-    const res = yield call(_updateData, data);
+    const res = yield call(_updateData, newData);
     yield put({
       type: COLLECTION.UPDATE_NASA_SUCCESS,
-      data: [res, JSON.stringify(data)]
+      data: [res, JSON.stringify(newData)]
     });
   } catch (e) {
     yield put({ type: COLLECTION.UPDATE_NASA_FAIL, message: e.message });

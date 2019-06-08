@@ -12,8 +12,21 @@ import {
   updateNasaAction
 } from '../../actions/collection.action';
 import NasaCard from '../../components/NasaCard.component';
+import FormModal from '../../components/FormModal/Modal.component';
+import FormInput from '../../components/FormModal/FormInput.component';
 
 class Collection extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      visibleModal: false,
+      nasaId: null,
+      title: null,
+      description: null,
+      imageUrl: null
+    };
+  }
+
   componentDidMount() {
     const { fetchLocalCollection } = this.props;
     fetchLocalCollection();
@@ -28,14 +41,33 @@ class Collection extends PureComponent {
         key={index}
         nasaData={data}
         onRemove={this._removeNasaToCollection}
-        onUpdate={this._updateNasafromCollection}
+        onUpdate={this._showFormData}
       />
     );
   };
 
-  _updateNasafromCollection = item => {
+  _showFormData = nasaData => {
+    const nasaId = _.get(nasaData, 'data[0].nasa_id');
+    const imageUrl = _.get(nasaData, 'links[0].href');
+    const title = _.get(nasaData, 'data[0].title');
+    const description = _.get(nasaData, 'data[0].description');
+
+    this.setState({ nasaId, imageUrl, title, description, visibleModal: true });
+  };
+
+  _updateNasafromCollection = () => {
     const { updateNasaFromCollection } = this.props;
-    updateNasaFromCollection(item);
+    const { nasaId, title, description, imageUrl } = this.state;
+
+    if (imageUrl) {
+      this.setState({ visibleModal: false });
+      updateNasaFromCollection({
+        title,
+        id: nasaId,
+        description,
+        imageUrl
+      });
+    }
   };
 
   _removeNasaToCollection = nasaId => {
@@ -45,6 +77,7 @@ class Collection extends PureComponent {
 
   render() {
     const { navigation, localCollection } = this.props;
+    const { visibleModal, title, description, imageUrl } = this.state;
     const nasas = _.get(localCollection, 'result');
     return (
       <View style={styles.container}>
@@ -65,6 +98,28 @@ class Collection extends PureComponent {
           keyExtractor={this._keyExtractor}
           renderItem={this._renderItem}
         />
+        <FormModal
+          isVisible={visibleModal}
+          onSave={this._updateNasafromCollection}
+          onClose={() => this.setState({ visibleModal: false })}
+        >
+          <FormInput
+            label="Title"
+            value={title}
+            onChangeText={text => this.setState({ title: text })}
+          />
+          <FormInput
+            label="Description"
+            value={description}
+            onChangeText={text => this.setState({ description: text })}
+          />
+          <FormInput
+            label="Link image url"
+            value={imageUrl}
+            isRequired
+            onChangeText={text => this.setState({ imageUrl: text })}
+          />
+        </FormModal>
       </View>
     );
   }

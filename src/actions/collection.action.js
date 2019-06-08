@@ -14,7 +14,7 @@ export const removeNasaAction = nasaId => ({
   nasaId
 });
 
-export const updateNasaAction = data => ({
+export const updateNasaAction = formData => ({
   type: COLLECTION.UPDATE_NASA_REQUEST,
-  data
+  formData
 });

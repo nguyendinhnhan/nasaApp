@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 import _ from 'lodash';
-import { searchData } from '../helpers/mockData';
 
 const styles = StyleSheet.create({
   container: {
@@ -120,7 +119,7 @@ const NasaCard = props => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.action}
-            onPress={() => onUpdate(searchData.collection.items[0])}
+            onPress={() => onUpdate(nasaData)}
           >
             <Icon name="ios-brush" size={30} />
           </TouchableOpacity>

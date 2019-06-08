@@ -126,7 +126,14 @@ export default function(state = initialState, payload) {
           status: 'success',
           requesting: false,
           result: _.map(state.localCollection.result, item => {
-            if (item[0] === payload.data[0]) return _.merge(item, payload.data);
+            if (item[0] === payload.data[0]) {
+              return [
+                item[0],
+                JSON.stringify(
+                  _.merge(JSON.parse(item[1]), JSON.parse(payload.data[1]))
+                )
+              ];
+            }
             return item;
           })
         }
