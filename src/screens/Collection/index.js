@@ -8,6 +8,7 @@ import _ from 'lodash';
 import styles from './styles';
 import {
   fetchLocalCollectionAction,
+  favoriteNasaAction,
   removeNasaAction,
   updateNasaAction
 } from '../../actions/collection.action';
@@ -20,10 +21,10 @@ class Collection extends PureComponent {
     super(props);
     this.state = {
       visibleModal: false,
-      nasaId: null,
-      title: null,
-      description: null,
-      imageUrl: null
+      nasaId: '',
+      title: '',
+      description: '',
+      imageUrl: ''
     };
   }
 
@@ -40,10 +41,16 @@ class Collection extends PureComponent {
       <NasaCard
         key={index}
         nasaData={data}
+        onFavorite={this._toogleFavorite}
         onRemove={this._removeNasaToCollection}
         onUpdate={this._showFormData}
       />
     );
+  };
+
+  _toogleFavorite = (nasaId, isFavorite) => {
+    const { favoriteNasaOfCollection } = this.props;
+    favoriteNasaOfCollection({ nasaId, isFavorite });
   };
 
   _showFormData = nasaData => {
@@ -128,6 +135,7 @@ class Collection extends PureComponent {
 Collection.propTypes = {
   navigation: PropTypes.object,
   fetchLocalCollection: PropTypes.func,
+  favoriteNasaOfCollection: PropTypes.func,
   removeNasaToCollection: PropTypes.func,
   updateNasaFromCollection: PropTypes.func,
   localCollection: PropTypes.object
@@ -139,6 +147,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchLocalCollection: () => dispatch(fetchLocalCollectionAction()),
+  favoriteNasaOfCollection: data => dispatch(favoriteNasaAction(data)),
   removeNasaToCollection: nasaId => dispatch(removeNasaAction(nasaId)),
   updateNasaFromCollection: item => dispatch(updateNasaAction(item))
 });

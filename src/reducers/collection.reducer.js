@@ -108,7 +108,9 @@ export default function(state = initialState, payload) {
         }
       };
 
-    /* Remove nasa to COLLECTION */
+    /* Favorite nasa to COLLECTION */
+    /* Update nasa to COLLECTION */
+    case COLLECTION.FAVORITE_NASA_REQUEST:
     case COLLECTION.UPDATE_NASA_REQUEST:
       return {
         ...state,
@@ -118,6 +120,7 @@ export default function(state = initialState, payload) {
           status: ''
         }
       };
+    case COLLECTION.FAVORITE_NASA_SUCCESS:
     case COLLECTION.UPDATE_NASA_SUCCESS:
       return {
         ...state,
@@ -138,6 +141,7 @@ export default function(state = initialState, payload) {
           })
         }
       };
+    case COLLECTION.FAVORITE_NASA_FAIL:
     case COLLECTION.UPDATE_NASA_FAIL:
       return {
         ...state,

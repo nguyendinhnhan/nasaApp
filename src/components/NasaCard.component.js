@@ -74,13 +74,21 @@ const styles = StyleSheet.create({
 });
 
 const NasaCard = props => {
-  const { nasaData, addToNasaCollection, onRemove, onUpdate } = props;
+  const {
+    nasaData,
+    addToNasaCollection,
+    onFavorite,
+    onRemove,
+    onUpdate
+  } = props;
   const nasaId = _.get(nasaData, 'data[0].nasa_id');
   const imageUri = { uri: _.get(nasaData, 'links[0].href') };
   const center = _.get(nasaData, 'data[0].center');
   const dateCreated = _.get(nasaData, 'data[0].date_created');
   const title = _.get(nasaData, 'data[0].title');
   const description = _.get(nasaData, 'data[0].description');
+  const isFavorite = _.get(nasaData, 'isFavorite', false);
+  const favoriteIcon = isFavorite ? 'ios-heart' : 'ios-heart-empty';
   return (
     <View style={styles.container}>
       <TouchableOpacity>
@@ -108,8 +116,11 @@ const NasaCard = props => {
         </TouchableOpacity>
       ) : (
         <View style={styles.actionWrapper}>
-          <TouchableOpacity style={styles.action}>
-            <Icon name="ios-heart-empty" size={30} />
+          <TouchableOpacity
+            style={styles.action}
+            onPress={() => onFavorite(nasaId, !isFavorite)}
+          >
+            <Icon name={favoriteIcon} size={30} />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.action}
@@ -132,6 +143,7 @@ const NasaCard = props => {
 NasaCard.propTypes = {
   nasaData: PropTypes.object.isRequired,
   addToNasaCollection: PropTypes.func,
+  onFavorite: PropTypes.func,
   onRemove: PropTypes.func,
   onUpdate: PropTypes.func
 };

@@ -83,9 +83,7 @@ function* removeNasaToCollection({ nasaId }) {
   }
 }
 
-async function _updateData(data) {
-  console.log('newData', data);
-  const nasaId = _.get(data, 'data[0].nasa_id');
+async function _updateData(nasaId, data) {
   try {
     await AsyncStorage.mergeItem(nasaId, JSON.stringify(data));
     return nasaId;
@@ -95,7 +93,7 @@ async function _updateData(data) {
 }
 
 function* updateNasaOfCollection({ formData }) {
-  console.log('formData', formData);
+  const nasaId = formData.id;
   const newData = {
     links: [
       {
@@ -105,13 +103,13 @@ function* updateNasaOfCollection({ formData }) {
     data: [
       {
         title: formData.title,
-        nasa_id: formData.id,
+        nasa_id: nasaId,
         description: formData.description
       }
     ]
   };
   try {
-    const res = yield call(_updateData, newData);
+    const res = yield call(_updateData, nasaId, newData);
     yield put({
       type: COLLECTION.UPDATE_NASA_SUCCESS,
       data: [res, JSON.stringify(newData)]
@@ -121,10 +119,26 @@ function* updateNasaOfCollection({ formData }) {
   }
 }
 
+function* favoriteNasaOfCollection({ data }) {
+  const nasaId = _.get(data, 'nasaId');
+  const newData = { isFavorite: data.isFavorite };
+
+  try {
+    const res = yield call(_updateData, nasaId, newData);
+    yield put({
+      type: COLLECTION.FAVORITE_NASA_SUCCESS,
+      data: [res, JSON.stringify(newData)]
+    });
+  } catch (e) {
+    yield put({ type: COLLECTION.FAVORITE_NASA_FAIL, message: e.message });
+  }
+}
+
 export function* collectionSaga() {
   yield all([
     takeLatest(COLLECTION.FETCH_LOCAL_REQUEST, fetchLocalCollection),
     takeLatest(COLLECTION.ADD_NASA_REQUEST, addNasaToCollection),
+    takeLatest(COLLECTION.FAVORITE_NASA_REQUEST, favoriteNasaOfCollection),
     takeLatest(COLLECTION.REMOVE_NASA_REQUEST, removeNasaToCollection),
     takeLatest(COLLECTION.UPDATE_NASA_REQUEST, updateNasaOfCollection)
   ]);
