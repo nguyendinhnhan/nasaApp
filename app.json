@@ -1,0 +1,5 @@
+{
+  "name": "nfqApp",
+  "displayName": "nfqApp",
+  "apiRoot": "https://images-api.nasa.gov"
+}
