@@ -1,8 +1,8 @@
-### 1. Write an application in React JS:
+### 1. Write an application in React Native:
 - The design is for reference only, feel free to use your own one: https://marvelapp.com/4f4j6j1/screen/46362067
 
 ### 2. Features Required:
-- Base on our design.
+- Base on the design.
 - Search from NASA APIs and Add to the list: https://api.nasa.gov/api.html#Images
 ```
 GET https://images-api.nasa.gov/search?q={q}
@@ -18,13 +18,6 @@ GET https://images-api.nasa.gov/search?q={q}
 - The list should use Local Storage or your preferable storage service.
 
 ### 5. Plus points for the candidate (optional):
-- Styling by SASS, SCSS, LESS or Style components.
 - No UI framework.
 - Use Redux, Mobx, Flux.
-- Config Webpack builds separately for the production and development environment.
-- Build PWA.
-- React Native (you can deploy to https://expo.io/ instead of https://pages.github.com/)
-
-### 6. Deploy your application to https://pages.github.com/ or any server that you have
-
-### 7. Push the code to git.nfq.asia. For more information please contact career@nfq.asia
+- React Native
